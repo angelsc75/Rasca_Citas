@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import pymysql
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 # URL del sitio web
 url = "https://quotes.toscrape.com/"
@@ -21,11 +21,11 @@ data = []
 
 # Iterar sobre las citas y extraer datos
 for quote in quotes:
-    text = quote.find('span', class_='text').get_text()
+    cita = quote.find('span', class_='text').get_text()
     author = quote.find('small', class_='author').get_text()
     about = "https://quotes.toscrape.com" + quote.find('a')['href']
     keywords = [tag.get_text() for tag in quote.find_all('a', class_='tag')]
-    data.append([text, author, about, keywords])
+    data.append([cita, author, about, keywords])
 
 # Crear DataFrame
 df = pd.DataFrame(data, columns=['quote', 'author', 'about', 'keywords'])
@@ -53,10 +53,10 @@ CREATE TABLE IF NOT EXISTS quotes (
 );
 """
 
-# Ejecutar la consulta de creación de la tabla
-with engine.connect() as conn:
-    conn.execute(create_table_query)
 
+# Ejecutar la consulta
+with engine.connect() as conn:
+    conn.execute(text(create_table_query))
 # Insertar los datos en la tabla
 df.to_sql('quotes', con=engine, if_exists='append', index=False)
 
