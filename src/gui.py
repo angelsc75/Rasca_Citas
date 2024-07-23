@@ -13,7 +13,7 @@ st.set_page_config(page_title="Visualización de Datos", layout="wide")
 st.title("Visualización de Datos con Streamlit")
 
 # Función para cargar datos
-@st.cache
+@st.cache_data
 def load_data():
     query = "SELECT * FROM quotes;"  # Ajusta la consulta según tu tabla
     with engine.connect() as conn:
