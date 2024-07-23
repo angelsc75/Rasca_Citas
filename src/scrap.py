@@ -3,12 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import pymysql
 from sqlalchemy import create_engine
-from dotenv import load_dotenv
-import os
 
-
-
-#load_dotenv()
 # URL del sitio web
 url = "https://quotes.toscrape.com/"
 
@@ -36,8 +31,36 @@ for quote in quotes:
 df = pd.DataFrame(data, columns=['quote', 'author', 'about', 'keywords'])
 
 # Convertir la lista de keywords a una cadena separada por comas
-#df['keywords'] = df['keywords'].apply(lambda x: ','.join(x))
-print(df.head(10))
+df['keywords'] = df['keywords'].apply(lambda x: ','.join(x))
+
+# Configurar la conexión a MySQL
+user = 'root'
+password = 'admin'
+host = 'localhost'
+database = 'scraping_quotes'
+
+# Crear la conexión a la base de datos
+engine = create_engine(f'mysql+pymysql://{user}:{password}@{host}/{database}')
+
+# Crear la tabla si no existe
+create_table_query = """
+CREATE TABLE IF NOT EXISTS quotes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    quote TEXT,
+    author VARCHAR(255),
+    about VARCHAR(255),
+    keywords TEXT
+);
+"""
+
+# Ejecutar la consulta de creación de la tabla
+with engine.connect() as conn:
+    conn.execute(create_table_query)
+
+# Insertar los datos en la tabla
+df.to_sql('quotes', con=engine, if_exists='append', index=False)
+
+print("Datos insertados exitosamente en la base de datos.")
 
 
 
