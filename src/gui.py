@@ -1,61 +1,48 @@
 import streamlit as st
-import pandas as pd
-from sqlalchemy import create_engine
+from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Configura tu conexión a la base de datos
-#DATABASE_URL = 'mysql+pymysql://root:admin@localhost/scraping_quotes'
-load_dotenv()  # Carga las variables del archivo .env
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+MONGO_URI = os.getenv('MONGO_URI')
+DATABASE_NAME = os.getenv('DATABASE_NAME')
+COLLECTION_NAME = os.getenv('COLLECTION_NAME')
 
-DATABASE_URL = os.getenv('DATABASE_URL')
-engine = create_engine(DATABASE_URL)
+# Conectar a MongoDB
+client = MongoClient(MONGO_URI)
+db = client[DATABASE_NAME]
+collection = db[COLLECTION_NAME]
 
-# Configuración de la página
-st.set_page_config(page_title="Visualización de Datos", layout="wide")
+# Configurar la página de Streamlit
+st.title("Quotes Scraper")
+st.sidebar.header("Filters")
 
-# Título de la aplicación
-st.title("Visualización de Datos con Streamlit")
+# Obtener todas las etiquetas y autores de la colección
+tags = collection.distinct("keywords")
+authors = collection.distinct("author")
 
-# Función para cargar datos
-@st.cache_data
-def load_data():
-    query = "SELECT * FROM quotes;"  # Ajusta la consulta según tu tabla
-    with engine.connect() as conn:
-        df = pd.read_sql(query, conn)
-    return df
+# Crear selectores en la barra lateral
+selected_tag = st.sidebar.selectbox("Select a tag", ["All"] + tags)
+selected_author = st.sidebar.selectbox("Select an author", ["All"] + authors)
 
-# Cargar datos
-data = load_data()
+# Filtrar las citas según la etiqueta y el autor seleccionados
+query = {}
+if selected_tag != "All":
+    query["keywords"] = selected_tag
+if selected_author != "All":
+    query["author"] = selected_author
 
-# Mostrar los datos en la aplicación
-st.write("### Datos de la Tabla Quotes")
-st.dataframe(data)
+quotes = collection.find(query)
 
-# Mostrar gráficos básicos
-st.write("### Gráficos Básicos")
-st.bar_chart(data['id'])
+# Mostrar las citas filtradas
+if collection.count_documents(query) == 0:
+    st.write("No quotes found.")
+else:
+    for quote in quotes:
+        st.write(f"**{quote['quote']}**")
+        st.write(f"— {quote['author']}")
+        st.write(f"Tags: {', '.join(quote['keywords'])}")
+        st.write(f"[About the author]({quote['about']})")
+        st.write("---")
 
-
-# Mostrar opciones
-option = st.selectbox('Selecciona una opción:', ['Opción 1', 'Opción 2'])
-
-# mostrar gráficos avanzados
-
-fig, ax = plt.subplots()
-sns.histplot(data['some_column'], ax=ax)
-st.pyplot(fig)
-
-# interactividad
-
-if st.button('Mostrar Mensaje'):
-    st.write('¡Botón presionado!')
-# layouts y diseños
-
-col1, col2 = st.columns(2)
-with col1:
-    st.write("Columna 1")
-with col2:
-    st.write("Columna 2")
