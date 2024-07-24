@@ -1,10 +1,24 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from sqlalchemy import create_engine, text
-from dotenv import load_dotenv, find_dotenv
+from pymongo import MongoClient
+from pymongo.errors import OperationFailure
+from dotenv import load_dotenv
 import os
 
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+MONGO_URI = os.getenv('MONGO_URI')
+DATABASE_NAME = os.getenv('DATABASE_NAME')
+COLLECTION_NAME = os.getenv('COLLECTION_NAME')
+
+# Conectar a MongoDB
+client = MongoClient(MONGO_URI)
+db = client[DATABASE_NAME]
+collection = db[COLLECTION_NAME]
+print(MONGO_URI)
+if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
+    raise ValueError("Asegúrate de que MONGO_URI, DATABASE_NAME y COLLECTION_NAME estén definidos en tu archivo .env")
 
 # URL del sitio web
 url = "https://quotes.toscrape.com/"
@@ -27,45 +41,23 @@ for quote in quotes:
     author = quote.find('small', class_='author').get_text()
     about = "https://quotes.toscrape.com" + quote.find('a')['href']
     keywords = [tag.get_text() for tag in quote.find_all('a', class_='tag')]
-    data.append([cita, author, about, keywords])
+    data.append({
+        'quote': cita,
+        'author': author,
+        'about': about,
+        'keywords': keywords
+    })
 
 # Crear DataFrame
-df = pd.DataFrame(data, columns=['quote', 'author', 'about', 'keywords'])
+df = pd.DataFrame(data)
 
-# Convertir la lista de keywords a una cadena separada por comas
-df['keywords'] = df['keywords'].apply(lambda x: ','.join(x))
+try:
+    
 
-# Configurar la conexión a MySQL
-#user = 'root'
-#password = 'admin'
-#host = 'localhost'
-#database = 'scraping_quotes'
-
-load_dotenv()
-DATABASE_URL = os.getenv('DATABASE_URL')
-# Crear la conexión a la base de datos
-engine = create_engine(DATABASE_URL)
-
-# Crear la tabla si no existe
-create_table_query = """
-CREATE TABLE IF NOT EXISTS quotes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    quote TEXT,
-    author VARCHAR(255),
-    about VARCHAR(255),
-    keywords TEXT
-);
-"""
-
-
-# Ejecutar la consulta
-with engine.connect() as conn:
-    conn.execute(text(create_table_query))
-# Insertar los datos en la tabla
-df.to_sql('quotes', con=engine, if_exists='append', index=False)
-
-print("Datos insertados exitosamente en la base de datos.")
-
-
-
-
+    # Insertar los datos en la colección
+    collection.insert_many(data)
+    print("Datos insertados exitosamente en la base de datos MongoDB.")
+except OperationFailure as e:
+    print(f"Error de operación en MongoDB: {e.details}")
+except Exception as e:
+    print(f"Error al conectar o insertar en MongoDB: {e}")
