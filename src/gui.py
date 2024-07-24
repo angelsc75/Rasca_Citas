@@ -15,8 +15,8 @@ db = client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 
 # Configurar la página de Streamlit
-st.title("Quotes Scraper")
-st.sidebar.header("Filters")
+st.title("El rasca citas")
+st.sidebar.header("Filtrado")
 
 # Obtener todas las etiquetas y autores de la colección
 tags = collection.distinct("keywords")
