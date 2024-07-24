@@ -1,8 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import pymysql
 from sqlalchemy import create_engine, text
+from dotenv import load_dotenv, find_dotenv
+import os
+
 
 # URL del sitio web
 url = "https://quotes.toscrape.com/"
@@ -34,13 +36,15 @@ df = pd.DataFrame(data, columns=['quote', 'author', 'about', 'keywords'])
 df['keywords'] = df['keywords'].apply(lambda x: ','.join(x))
 
 # Configurar la conexión a MySQL
-user = 'root'
-password = 'admin'
-host = 'localhost'
-database = 'scraping_quotes'
+#user = 'root'
+#password = 'admin'
+#host = 'localhost'
+#database = 'scraping_quotes'
 
+load_dotenv()
+DATABASE_URL = os.getenv('DATABASE_URL')
 # Crear la conexión a la base de datos
-engine = create_engine(f'mysql+pymysql://{user}:{password}@{host}/{database}')
+engine = create_engine(DATABASE_URL)
 
 # Crear la tabla si no existe
 create_table_query = """
