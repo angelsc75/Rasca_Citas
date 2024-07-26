@@ -1,7 +1,7 @@
 import logging
 
 """
-Configura y devuelve un logger para la aplicación EscuelaMusical.
+Configura y devuelve un logger para la aplicación.
 
 Este logger registra mensajes en un archivo y en la consola con diferentes niveles de severidad y formatos.
 
@@ -10,12 +10,12 @@ Returns:
 """
 
 def setup_logger():
-    # Crear un logger con el nombre 'music_app'
+    # Crear un logger con el nombre 'loggs_scrap'
     logger = logging.getLogger('loggs_scrap')
     # Configurar el nivel de severidad del logger a DEBUG
     logger.setLevel(logging.DEBUG)
 
-    # Crear un manejador de archivo que registra mensajes en 'music_app.log' con codificación UTF-8
+    # Crear un manejador de archivo que registra mensajes en 'loggs_scrap.log' con codificación UTF-8
     fh = logging.FileHandler('loggs_scrap', encoding='utf-8')
     # Configurar el nivel de severidad del manejador de archivo a DEBUG
     fh.setLevel(logging.DEBUG)
