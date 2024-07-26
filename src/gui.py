@@ -44,8 +44,8 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Barra lateral de filtrado
-st.sidebar.header("Filtrado")
+# Barra lateral 
+
 
 # Agregar el botón para iniciar/detener el scraping en la barra lateral
 if 'scraping_active' not in st.session_state:
@@ -62,6 +62,7 @@ if st.session_state.scraping_active:
 else:
     st.sidebar.write("El scraping está DESACTIVADO. El script no se está ejecutando.")
 
+st.sidebar.header("Filtrado")
 # Obtener todas las etiquetas y autores de la colección
 tags = collection.distinct("keywords")
 authors = collection.distinct("author")
