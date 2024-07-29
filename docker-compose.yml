@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  my_mongo_db:
+    image: mongo:latest
+    container_name: my_mongo_db
+    ports:
+      - "27017:27017"
+    networks:
+      - my_network
+
+  my_python_app:
+    build: ./src
+    container_name: my_python_app
+    depends_on:
+      - my_mongo_db
+    networks:
+      - my_network
+    ports:
+      - "8501:8501"
+
+networks:
+  my_network:
+    driver: bridge
+
+
