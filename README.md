@@ -24,23 +24,23 @@ Después de sacar citas de dos sitios web, éstas se almacenan en una base de da
 
 - Lenguaje de programación Python
 - Base de datos MongoDB
+- Test unitarios: Pytest
+- Creación de fronted para que interaccione un usuario: Streamlite
+- Creación de imagen y de contenedores de aplicación y base de datos: Docker
 - Organizaciónd del trabajo: Trello
 - Control de versiones: GitHub
-- Docker
-![Uploading d<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 756.26 596.9">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: #1d63ed;
-        stroke-width: 0px;
-      }
-    </style>
-  </defs>
-  <path class="cls-1" d="M743.96,245.25c-18.54-12.48-67.26-17.81-102.68-8.27-1.91-35.28-20.1-65.01-53.38-90.95l-12.32-8.27-8.21,12.4c-16.14,24.5-22.94,57.14-20.53,86.81,1.9,18.28,8.26,38.83,20.53,53.74-46.1,26.74-88.59,20.67-276.77,20.67H.06c-.85,42.49,5.98,124.23,57.96,190.77,5.74,7.35,12.04,14.46,18.87,21.31,42.26,42.32,106.11,73.35,201.59,73.44,145.66.13,270.46-78.6,346.37-268.97,24.98.41,90.92,4.48,123.19-57.88.79-1.05,8.21-16.54,8.21-16.54l-12.3-8.27ZM189.67,206.39h-81.7v81.7h81.7v-81.7ZM295.22,206.39h-81.7v81.7h81.7v-81.7ZM400.77,206.39h-81.7v81.7h81.7v-81.7ZM506.32,206.39h-81.7v81.7h81.7v-81.7ZM84.12,206.39H2.42v81.7h81.7v-81.7ZM189.67,103.2h-81.7v81.7h81.7v-81.7ZM295.22,103.2h-81.7v81.7h81.7v-81.7ZM400.77,103.2h-81.7v81.7h81.7v-81.7ZM400.77,0h-81.7v81.7h81.7V0Z"/>
-</svg>ocker-mark-blue.svg…]()
+  
+![python-logo-master-v3-TM-flattened](https://github.com/user-attachments/assets/2e93137f-033a-4c03-bc18-22f829dd3a94)
+![MongoDB_SpringGreen](https://github.com/user-attachments/assets/1ac19f43-c938-4577-9865-6eb8e6b2242c)
+![pytest1](https://github.com/user-attachments/assets/1bdb7549-1d74-4e0c-b759-26c2b16e9576)
+![streamlit-logo-primary-colormark-darktext](https://github.com/user-attachments/assets/1e0b7995-c482-4b7b-ad9e-77f15e8ac715)
+![docker-mark-blue](https://github.com/user-attachments/assets/1fe34e27-5aa8-4c81-8f50-1428b7f9c599)
+![trello_logo_icon_168452](https://github.com/user-attachments/assets/294b00bc-7503-46ca-a337-b1e296862a38)
+![github](https://github.com/user-attachments/assets/1faaf580-7970-4d71-b306-1840cfa175a7)
+
 
 
 ## Autor del proyecto
+
 
 Ángel Sanz Crespo
