@@ -20,6 +20,17 @@ Después de sacar citas de dos sitios web, éstas se almacenan en una base de da
 
 ## Cómo se arranca
 
+Para que el proyecto funciones tiene que tener en ejecución la base de datos scraping_quotes. 
+A través de Visual Studio Code, habría que ejecutar el comando *streamlit run main.py * desde la carpeta src
+
+![arrancar_vsc](https://github.com/user-attachments/assets/42697028-7c09-443d-8cf8-3da76a9d5311)
+
+Otra forma sería desde Docker arrancar el contenedor *web_scraping_angel_sc*
+
+![arrancar_desde_docker](https://github.com/user-attachments/assets/47bbc0b1-3e4d-4296-b05f-b2db0560a75e)
+
+En un futuro también se desplegará desde Streamlite Cloud.
+
 ## Teconologías utilizadas
 
 - Lenguaje de programación Python
@@ -37,6 +48,12 @@ Después de sacar citas de dos sitios web, éstas se almacenan en una base de da
 ![docker-mark-blue](https://github.com/user-attachments/assets/1fe34e27-5aa8-4c81-8f50-1428b7f9c599)
 ![trello_logo_icon_168452](https://github.com/user-attachments/assets/294b00bc-7503-46ca-a337-b1e296862a38)
 ![github](https://github.com/user-attachments/assets/1faaf580-7970-4d71-b306-1840cfa175a7)
+
+## Posibles mejoras
+
+- Despliegue en la web
+- Rascado en más páginas de citas
+- Mejora de búsqueda por etiqueta: que una etiqueta indique con qué otras etiquetas está relacionada al ser seleccionada...
 
 
 
