@@ -23,6 +23,19 @@ MONGO_URI = os.getenv('MONGO_URI')
 DATABASE_NAME = os.getenv('DATABASE_NAME')
 COLLECTION_NAME = os.getenv('COLLECTION_NAME')
 
+def perform_scraping(client):
+    logger.info("Inicio del proceso de scraping.")
+    st.write("Inicio del proceso de scraping.")  # Para verificar visualmente
+    try:
+        scrap_confucious()
+        scrap_basic()
+        logger.info("Scraping completado con éxito.")
+        st.write("Scraping completado con éxito.")  # Para verificar visualmente
+    except Exception as e:
+        logger.error(f"Error durante el scraping: {e}")
+        st.error("Hubo un error durante el scraping. Revisa los detalles en el log.")
+    
+
 # Conectar a MongoDB
 try:
     client = MongoClient(MONGO_URI)
@@ -34,25 +47,17 @@ except errors.ConnectionError as e:
     st.error("No se pudo conectar a la base de datos MongoDB. Revisa los detalles en el log.")
     st.stop()
 
-def perform_scraping():
-    logger.info("Inicio del proceso de scraping.")
-    st.write("Inicio del proceso de scraping.")  # Para verificar visualmente
-    try:
-        scrap_confucious()
-        scrap_basic()
-        logger.info("Scraping completado con éxito.")
-        st.write("Scraping completado con éxito.")  # Para verificar visualmente
-    except Exception as e:
-        logger.error(f"Error durante el scraping: {e}")
-        st.error("Hubo un error durante el scraping. Revisa los detalles en el log.")
-    finally:
-        client.close()
-        logger.info("Desconexión de MongoDB exitosa.")
+# Inicializar el estado de sesión
+if 'last_scraping_time' not in st.session_state:
+    st.session_state.last_scraping_time = 0
 
-# Ejecutar el scraping una vez al iniciar la aplicación
-if 'scraping_done' not in st.session_state:
-    perform_scraping()
-    st.session_state.scraping_done = True
+# Ejecutar el scraping si han pasado 5 minutos
+current_time = time.time()
+time_interval = 300  # 5 minutos en segundos
+
+if current_time - st.session_state.last_scraping_time > time_interval:
+    perform_scraping(client)
+    st.session_state.last_scraping_time = current_time
 
 # Agregar un banner
 st.markdown("""
@@ -75,16 +80,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.sidebar.header("Filtrado")
-# Reconectar a MongoDB para consultas
-try:
-    client = MongoClient(MONGO_URI)
-    db = client[DATABASE_NAME]
-    collection = db[COLLECTION_NAME]
-except errors.ConnectionError as e:
-    logger.error(f"Error al reconectar a MongoDB: {e}")
-    st.error("No se pudo reconectar a la base de datos MongoDB. Revisa los detalles en el log.")
-    st.stop()
-
 # Obtener todas las etiquetas y autores de la colección
 try:
     tags = collection.distinct("keywords")
@@ -128,12 +123,11 @@ except Exception as e:
     st.error("Hubo un error al mostrar las citas. Revisa los detalles en el log.")
 
 # Actualizar la interfaz principal en función del tiempo del último scraping
-if 'scraping_done' in st.session_state:
-    last_scraping_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+if 'last_scraping_time' in st.session_state:
+    last_scraping_time = time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(st.session_state.last_scraping_time))
     st.write(f"Última ejecución del scraping: {last_scraping_time}")
 else:
     st.write("Scraping no ejecutado.")
-
 
 
 
