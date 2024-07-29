@@ -9,7 +9,7 @@ from scrap_confucius import scrap_confucius
 
 # Configurar la página de Streamlit
 st.set_page_config(
-    page_title="El busca citas (~ frases)",
+    page_title="El rasca citas (célebres)",
     page_icon="https://img.icons8.com/color/96/guru.png",
     layout="wide",
 )
@@ -162,7 +162,7 @@ try:
             st.write("---")
 except Exception as e:
     logger.error(f"Error al mostrar citas: {e}")
-    st.error("Hubo un error al mostrar las citas. Revisa los detalles en el log.")
+    st.error("Hubo un error al mostrar las citas.")
 
 # Actualizar la interfaz principal en función del tiempo del último scraping
 if 'last_scraping_time' in st.session_state:
