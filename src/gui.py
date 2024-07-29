@@ -5,7 +5,7 @@ import os
 import time
 from logging_config import setup_logger
 from scrap_basic import scrap_basic
-from scrap_confucius import scrap_confucious
+from scrap_confucius import scrap_confucius
 
 # Configurar la página de Streamlit
 st.set_page_config(
@@ -27,7 +27,7 @@ def perform_scraping(client):
     logger.info("Inicio del proceso de scraping.")
     st.write("Inicio del proceso de scraping.")  # Para verificar visualmente
     try:
-        scrap_confucious()
+        scrap_confucius()
         scrap_basic()
         logger.info("Scraping completado con éxito.")
         st.write("Scraping completado con éxito.")  # Para verificar visualmente
