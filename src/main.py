@@ -20,8 +20,50 @@ logger = setup_logger()
 # Cargar variables de entorno
 load_dotenv()
 MONGO_URI = os.getenv('MONGO_URI')
-DATABASE_NAME = os.getenv('DATABASE_NAME')
-COLLECTION_NAME = os.getenv('COLLECTION_NAME')
+DATABASE_NAME = os.getenv('DATABASE_NAME', "nombre_por_defecto")
+COLLECTION_NAME = os.getenv('COLLECTION_NAME', 'nombre_por_defecto')
+
+
+
+if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
+    st.error("MONGO_URI, DATABASE_NAME o COLLECTION_NAME no están definidos en el archivo .env")
+    raise ValueError("MONGO_URI, DATABASE_NAME o COLLECTION_NAME no están definidos en el archivo .env")
+
+try:
+    client = MongoClient(MONGO_URI)
+    db = client[DATABASE_NAME]
+    collection = db[COLLECTION_NAME]
+except errors.ConnectionFailure as e:
+    st.error(f"Error de conexión: {e}")
+except errors.ConfigurationError as e:
+    st.error(f"Error de configuración: {e}")
+except Exception as e:
+    st.error(f"Error inesperado: {e}")
+
+# Verifica que DATABASE_NAME es una cadena
+if not isinstance(DATABASE_NAME, str):
+    raise TypeError("DATABASE_NAME debe ser una cadena")
+
+try:
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client[DATABASE_NAME]
+except errors.ConnectionFailure as e:
+    print(f"Error de conexión: {e}")
+except errors.ConfigurationError as e:
+    print(f"Error de configuración: {e}")
+    
+if not isinstance(DATABASE_NAME, str):
+    raise TypeError("DATABASE_NAME debe ser una cadena")
+
+if not isinstance(COLLECTION_NAME, str):
+    raise TypeError("COLLECTION_NAME debe ser una cdena")
+try:
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client[DATABASE_NAME]
+except errors.ConnectionFailure as e:
+    print(f"Error de conexión: {e}")
+except errors.ConfigurationError as e:
+    print(f"Error de configuración: {e}")
 
 def perform_scraping(client):
     logger.info("Inicio del proceso de scraping.")
