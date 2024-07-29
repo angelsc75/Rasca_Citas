@@ -10,8 +10,12 @@ services:
       - my_network
 
   my_python_app:
-    build: ./src
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: my_python_app
+    environment:
+      - TZ=Europe/Madrid
     depends_on:
       - my_mongo_db
     networks:
