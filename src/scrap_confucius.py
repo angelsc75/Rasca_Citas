@@ -9,7 +9,7 @@ from logging_config import setup_logger
 # Configurar el logger
 logger = setup_logger()
 
-def scrap_confucious():
+def scrap_confucius():
     # Cargar las variables de entorno desde el archivo .env
     load_dotenv()
     MONGO_URI = os.getenv('MONGO_URI')
@@ -96,7 +96,7 @@ def scrap_confucious():
 # Ejecutar la función de scraping
 if __name__ == "__main__":
     try:
-        scrap_confucious()
+        scrap_confucius()
     except Exception as e:
         logger.error(f"Error al ejecutar el scraping: {e}")
 
