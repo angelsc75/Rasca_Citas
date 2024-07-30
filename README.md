@@ -20,6 +20,15 @@ Después de sacar citas de dos sitios web, éstas se almacenan en una base de da
 
 ## Cómo se arranca
 
+Variables de entorno (parar arrancar desde github o construir el docker compose: :
+
+![variables de entorno](https://github.com/user-attachments/assets/714ea241-b061-463c-9572-1aad07efaada)
+
+Comando para construir imagen de docker y ejecutarla: 
+
+![imagen](https://github.com/user-attachments/assets/53841f41-3e96-48f4-bed1-b1b11b4bf9c4)
+
+
 Para que el proyecto funciones tiene que tener en ejecución la base de datos scraping_quotes. 
 A través de Visual Studio Code, habría que ejecutar el comando *streamlit run main.py * desde la carpeta src
 
