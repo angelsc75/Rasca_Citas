@@ -117,7 +117,7 @@ st.markdown("""
     </style>
     <div class="banner">
         <img src="https://img.icons8.com/color/96/guru.png" alt="Banner">
-        <h1>El busca citas (~ frases)</h1>
+        <h1>El rasca citas (célebres)</h1>
     </div>
 """, unsafe_allow_html=True)
 
